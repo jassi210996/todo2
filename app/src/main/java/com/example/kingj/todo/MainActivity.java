@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("thefuck"," = =" + dateString +"=" + hour + "=" +month+" = "+title+" = "+time);
 
             Task task = new Task(dateString,title,time);
-
+//            task.setId();
             taskDao.addTasks(task);
             taskArrayList.add(task);
             adapter.notifyDataSetChanged();
