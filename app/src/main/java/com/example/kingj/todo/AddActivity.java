@@ -153,6 +153,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 else
                     time = hourOfday + ":" + minOfHour;
 
+
+
                 editTaskTime.setText(time);
 
             }
@@ -182,6 +184,11 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 taskDao = database.getTaskDao();
 
                 Task task = new Task(taskDate, title, timeString);
+                task.setDay(day);
+                task.setHour(hour);
+                task.setMin(min);
+                task.setMonth(month);
+                task.setYear(year);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 Intent intent = new Intent(this,MyReceiver.class);
                 PendingIntent pendingIntent=PendingIntent.getBroadcast(this,1,intent,0);

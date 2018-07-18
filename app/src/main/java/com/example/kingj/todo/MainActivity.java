@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static String Date_k ="date";
     public static String Id_k ="id";
 
+    String CHECK_KEY = "checkbox";
+    SharedPreferences sharedPreferences;
+
     public static int Request_code_for_edit=2;
 
     RecyclerView recyclerView;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView delete;
     List<Task> taskArrayList= new ArrayList<>();
     TaskDao taskDao;
+    String c1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sharedPreferences= getApplicationContext().getSharedPreferences("my_sp",MODE_PRIVATE);
+         c1 = sharedPreferences.getString(CHECK_KEY, null);
 
         TaskDatabase database = Room.databaseBuilder(getApplicationContext(),TaskDatabase.class,"task_db").allowMainThreadQueries().build();
         taskDao = database.getTaskDao();
@@ -173,6 +181,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Task task = new Task(dateString,title,time);
 //            task.setId();
 
+            task.setDay(day);
+            task.setHour(hour);
+            task.setMin(min);
+            task.setMonth(month);
+            task.setYear(year);
+
             taskDao.addTasks(task);
 
 
@@ -214,7 +228,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //             Task task = new Task(dateString,title,time);
 //            task.setId();
 
+
              Task task1=new Task(dateString,title,time);
+             task1.setDay(day);
+             task1.setHour(hour);
+             task1.setMin(min);
+             task1.setMonth(month);
+             task1.setYear(year);
+
              task1.setId(id1);
 
 
@@ -236,6 +257,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -251,14 +277,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+
+
+                startActivity(new Intent(this,SettingActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
     @Override
     public void onClick(View v) {
