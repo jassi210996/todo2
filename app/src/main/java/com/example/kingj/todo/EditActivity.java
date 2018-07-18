@@ -130,7 +130,19 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             public void onTimeSet(TimePicker timePicker, int hourOfday, int minOfHour) {
                 hour = hourOfday;
                 min=minOfHour;
-                time = hourOfday + ":" + minOfHour;
+                if(hourOfday<10 && minOfHour<10)
+                {
+
+                    time = "0"+hourOfday + ":" + "0"+ minOfHour;
+                }
+                else if(hourOfday<10)
+                {
+                    time = "0"+hourOfday + ":" + minOfHour;
+                }
+                else if(minOfHour<10)
+                    time = hourOfday + ":" +"0"+ minOfHour;
+                else
+                    time = hourOfday + ":" + minOfHour;
 
                 editTaskTime.setText(time);
 
@@ -144,9 +156,9 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        title = editTaskTitle.getText().toString();
-        time = editTaskTime.getText().toString();
-        date = editTaskDate.getText().toString();
+        title = editTaskTitle.getText().toString().trim();
+        time = editTaskTime.getText().toString().trim();
+        date = editTaskDate.getText().toString().trim();
 
         if (title.matches("") || time.matches("") || date.matches(""))
         {

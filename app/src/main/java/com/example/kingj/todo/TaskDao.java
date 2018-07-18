@@ -22,6 +22,12 @@ public interface TaskDao {
     @Query("select * from task")
     List<Task> getTasks();
 
+    @Query("select max(id) from task")
+    long getMaxId();
+
+    @Query("select * from task where id = :id")
+    Task getTaskAtMax(long id);
+
     @Delete
     void deleteTasks(Task task);
 

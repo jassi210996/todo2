@@ -1,7 +1,10 @@
 package com.example.kingj.todo;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class AddActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -134,7 +138,20 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             public void onTimeSet(TimePicker timePicker, int hourOfday, int minOfHour) {
                 hour = hourOfday;
                 min=minOfHour;
-                time = hourOfday + ":" + minOfHour;
+
+                if(hourOfday<10 && minOfHour<10)
+                {
+
+                    time = "0"+hourOfday + ":" + "0"+ minOfHour;
+                }
+                else if(hourOfday<10)
+                {
+                    time = "0"+hourOfday + ":" + minOfHour;
+                }
+                else if(minOfHour<10)
+                    time = hourOfday + ":" +"0"+ minOfHour;
+                else
+                    time = hourOfday + ":" + minOfHour;
 
                 editTaskTime.setText(time);
 
@@ -149,9 +166,9 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
 
 
-        title=editTaskTitle.getText().toString();
-        String timeString=editTaskTime.getText().toString();
-        String taskDate = editTaskDate.getText().toString();
+        title=editTaskTitle.getText().toString().trim();
+        String timeString=editTaskTime.getText().toString().trim();
+        String taskDate = editTaskDate.getText().toString().trim();
 
         if (intent.getAction()!=null && intent.getAction().equals(Intent.ACTION_SEND)) {
 
@@ -161,8 +178,19 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             }
             else
             {
+                TaskDatabase database = Room.databaseBuilder(getApplicationContext(),TaskDatabase.class,"task_db").allowMainThreadQueries().build();
+                taskDao = database.getTaskDao();
+
                 Task task = new Task(taskDate, title, timeString);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                Intent intent = new Intent(this,MyReceiver.class);
+                PendingIntent pendingIntent=PendingIntent.getBroadcast(this,1,intent,0);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year,month,day,hour,min);
+                alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
                 taskDao.addTasks(task);
+
+                finish();
             }
         }
         else

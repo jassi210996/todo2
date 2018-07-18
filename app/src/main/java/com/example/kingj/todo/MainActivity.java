@@ -172,9 +172,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             Task task = new Task(dateString,title,time);
 //            task.setId();
+
             taskDao.addTasks(task);
+
+
             taskArrayList.add(task);
+
             adapter.notifyDataSetChanged();
+
+            long id = taskDao.getMaxId();
+
+           Task task1=taskDao.getTaskAtMax(id);
+
+           taskArrayList.set(taskArrayList.size()-1,task1);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             Intent intent = new Intent(this,MyReceiver.class);

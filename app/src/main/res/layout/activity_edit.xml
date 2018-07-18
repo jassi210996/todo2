@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            app:title="Add Task"
+            app:title="Edit Task"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -73,6 +73,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:hint="Date not set"
+            android:drawableRight="@drawable/ic_date_range_black_24dp"
             android:id="@+id/taskDate"
             android:textSize="20dp"
             android:layout_width="match_parent"
@@ -94,6 +95,8 @@
             android:layout_marginRight="15dp"
             android:hint="Time not set"
             android:id="@+id/taskTime"
+
+            android:drawableRight="@drawable/ic_access_time_black_24dp"
             android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -104,7 +107,7 @@
             android:layout_marginRight="15dp"
             android:textColor="@color/grey"
             android:textSize="10dp"
-            android:text="(No notification if date not set)"
+            android:text="(No notification if date and time not set)"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
