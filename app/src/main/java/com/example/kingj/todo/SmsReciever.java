@@ -28,7 +28,7 @@ public class SmsReciever extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
-        sharedPreferences=context.getSharedPreferences("my_sp",MODE_PRIVATE);
+        sharedPreferences=context.getApplicationContext().getSharedPreferences("my_sp",MODE_PRIVATE);
         chck= sharedPreferences.getString(Check_k,null);
         Bundle data = intent.getExtras();
 

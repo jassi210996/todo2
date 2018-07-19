@@ -30,7 +30,7 @@ public class SettingActivity extends AppCompatActivity {
         Switch switchButton = findViewById(R.id.switch_Settings);
 
 
-        sharedPreferences=getSharedPreferences("my_sp",MODE_PRIVATE);
+        sharedPreferences=getApplicationContext().getSharedPreferences("my_sp",MODE_PRIVATE);
         chck= sharedPreferences.getString(Check_k,null);
 
         if(chck!=null) {
@@ -54,11 +54,14 @@ public class SettingActivity extends AppCompatActivity {
                         String[] permissions = {Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS};
                         ActivityCompat.requestPermissions(SettingActivity.this,permissions,1011);
                     }
+
+                    sharedPreferences.edit().putString(Check_k,"1").apply();
                 }
                 else if(isChecked==false)
                 {
                     requet_code=2;
-//                        Toast.makeText(this, "Grant Permissions", Toast.LENGTH_SHORT).show();
+                    sharedPreferences.edit().putString(Check_k,"-1").apply();
+//      Toast.makeText(this, "Grant Permissions", Toast.LENGTH_SHORT).show();
                 }
             }
     });
